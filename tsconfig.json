@@ -3,18 +3,19 @@
   "compilerOptions": {
     "target": "es5",
     "outDir": "dist",
-    // "allowJs": true,
+    "module": "CommonJS",
+    "allowJs": true,
     // "skipLibCheck": true,
     // "strict": true,
     // "forceConsistentCasingInFileNames": true,
     // "noEmit": true,
-    // "esModuleInterop": true,
+    "esModuleInterop": true,
     // "moduleResolution": "node",
-    // "resolveJsonModule": true,
+    "resolveJsonModule": true,
     // "isolatedModules": true,
     // "jsx": "preserve",
     // "incremental": true
   },
-  "include": ["src","**/*.ts", "**/*.tsx", "jest.config.js", "seed"],
+  "include": ["src","**/*.ts", "**/*/*.ts"],
   "exclude": ["node_modules"]
 }

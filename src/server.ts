@@ -3,9 +3,9 @@ import { ErrorResponse } from './utils/expressError'
 import  cors from 'cors'
 import { db } from './db/db'
 import { readConfig }from './config'
-import subjectRoute from './routes/subjectsRoute'
-import studentRoute from './routes/studentRoutes'
 import errorHandler from './utils/error'
+import userRoute from './routes/userRoutes'
+import reviewsRoute from './routes/reviewsRoute'
 
 const middleware = (app: Application) => {
   app.use(express.json())
@@ -15,10 +15,10 @@ const middleware = (app: Application) => {
 
 const setupRoute = (app: Application) => {
   app.get('/', async (request: Request , response: Response) => {
-    await response.json({message: 'Welcome to Ori Student management board!!'})
+    await response.json({ message: 'Welcome to Pent api that allows you to give reviews about your previous stayed apartment to help others!!'})
   })
 
-  app.use('/api', [subjectRoute, studentRoute])
+  app.use('/api', [userRoute, reviewsRoute])
 
   app.all('*', (request : Request, response: Response, next : NextFunction ) => {
     next(new ErrorResponse('Page not found', 404))
