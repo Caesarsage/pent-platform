@@ -35,7 +35,7 @@ Welcome to Pent api that allows you to give reviews about your previous stayed a
 
 ## How to run from hosted link
 
-- Copy the `baseUrl` hosted on heroku link
+- Copy the `baseUrl` hosted on heroku link [https://pent-platform.herokuapp.com/](https://pent-platform.herokuapp.com/)
 
 - Refer to [Endpoint](#endpoints) for Request Arguments requirement and endpoint to test on postman
 
