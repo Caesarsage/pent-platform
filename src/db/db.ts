@@ -5,7 +5,7 @@ export const db = async (config: Config) => {
   let db
   try {
     if(process.env.NODE_ENV === 'test') {
-      db = 'mongodb://localhost:27017/test-reviews'
+      db = 'mongodb://localhost:27017/test-rev'
     }
     if(process.env.NODE_ENV ==='development'){
       db = 'mongodb://localhost:27017/apartment-reviews'
