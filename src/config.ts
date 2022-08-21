@@ -15,7 +15,7 @@ export interface Config {
 export const readConfig : Config = {
   port: process.env.PORT,
   test_port: process.env.TEST_PORT,
-  MONGO_URL: 'mongodb://localhost:27017/pent-platform',
+  MONGO_URL: process.env.MONGO_URL || 'mongodb://localhost:27017/pent-platform',
   ADMIN_USERNAME: process.env.ADMIN_USERNAME,
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
   JWT_EXPIRY: Number(process.env.JWT_EXPIRY),
