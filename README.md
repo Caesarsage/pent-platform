@@ -1,5 +1,6 @@
-## STUDENT MANAGEMENT API Documentation
+# PENT Platform API Documentation
 
+Welcome to Pent api that allows you to give reviews about your previous stayed apartment to help others!!
 ## Technologies Used
 
 - Backend - ExpressJS/Typescript
@@ -12,7 +13,7 @@
 
 #### Prerequisites
 
-- Have nodejs v14 and above installed on your system
+- Have nodejs v18 and above installed on your system
 - Have mongodb installed
 
 #### Dependencies installation
@@ -25,9 +26,16 @@
 - Replace the following environment variable with yours
   - `MONGO_URL`
   - `PORT`
+  - `TEST_PORT`
+  - `JWT_SECRET`
+  - `JWT_EXPIRY`
+
+- start the server
+  - `npm run serve`
 
 ## How to run from hosted link
-- Copy the `baseUrl` hosted on heroku link https://student-management-api-be.herokuapp.com
+
+- Copy the `baseUrl` hosted on heroku link
 
 - Refer to [Endpoint](#endpoints) for Request Arguments requirement and endpoint to test on postman
 
@@ -37,8 +45,8 @@ Errors are returned as JSON objects in the following format:
 
 ```json
 {
-    "statusCode": 404,
-    "error": "not found"
+  "statusCode": 404,
+  "error": "not found"
 }
 ```
 
@@ -52,6 +60,7 @@ The API will return four error types when requests fail:
 ### Endpoints
 
 #### GET `'/'`
+
 - Home and welcome page
 
 - **Request Arguments** : `None`
@@ -61,157 +70,233 @@ The API will return four error types when requests fail:
 - **Sample** :
 
 ```json
-message	"Welcome to Ori Student management board!!"
-```
-
-#### POST `'/api/student'`
-
-- Sends a post request to register a new student
-- **Request Arguments** : A json body containing, `name` - string, `gender` - string, `classLevel` - string
-  (accepted classLevel are `JSS 1`, `JSS 2`. `JSS 3`, `SS 1`, `SS 2`, `SS 3`)
-
-- Returns: Returns a success message and register student details.
-
-- Sample:
-
-```json
 {
-    "message": "successfully created student",
-    "data": {
-        "name": "Caesar",
-        "gender": "Male",
-        "registeredSubjects": [],
-        "_id": "630102a9781c04f980887a56",
-        "id": "630102a9781c04f980887a56",
-        "__v": 0
-    }
+  "message": "Welcome to Pent api that allows you to give reviews about your previous stayed apartment to help others!!"
 }
-
-
-
 ```
 
-#### GET `'/api/students'`
+#### POST `'/api/auth/register'`
 
-- Fetches a list of object of students in which the keys are the id, name, gender, class and registered subject.
-- Request Arguments: `None`
-- Returns: A data object with a `id`, `name`, `gender`, `class` and `registered subjects`. `Total length` of students also return
+- Register to gain author privileges
 
-- Sample: This endpoint return a total length of 9000 + monk data but for sample, 2 return
+- **Request Arguments**
+
+  - `username` : string
+  - `password` string
+  - `email`: string
+  - `firstName` : string
+  - `lastName` : string
+  - `gender` : string
+
+- **Returns** : successful message and token
+
+- **Sample** :
 
 ```json
 {
-    "data": [
-        {
-            "_id": "62fee58e5e3720fa590a83a6",
-            "name": "CaesarSage",
-            "gender": "Male",
-            "registeredSubjects": [
-                {
-                    "_id": "62fe5b339c078cde1edd2f84",
-                    "code": "English",
-                    "leadTutor": "Destiny",
-                    "credit": 23,
-                    "__v": 0
-                },
-                {
-                    "_id": "62fe5b5ee44f5a341426ad95",
-                    "code": "Physics",
-                    "leadTutor": "Destiny",
-                    "credit": 23,
-                    "__v": 0
-                },
-                {
-                    "_id": "62fe5b91e44f5a341426ada2",
-                    "code": "CRK",
-                    "leadTutor": "Destiny",
-                    "credit": 23,
-                    "__v": 0
-                }
-            ],
-            "id": "62fee58e5e3720fa590a83a6",
-            "__v": 0
-        },
-        {
-            "_id": "62fee5aa5e3720fa590a83a8",
-            "name": "Caesar",
-            "gender": "Male",
-            "registeredSubjects": [
-                {
-                    "_id": "62fe5b009c078cde1edd2f7f",
-                    "code": "Maths",
-                    "leadTutor": "Destiny",
-                    "credit": 50,
-                    "__v": 0
-                },
-                {
-                    "_id": "62fe5b339c078cde1edd2f84",
-                    "code": "English",
-                    "leadTutor": "Destiny",
-                    "credit": 23,
-                    "__v": 0
-                },
-                {
-                    "_id": "62fe5b6be44f5a341426ad99",
-                    "code": "Chemistry",
-                    "leadTutor": "Destiny",
-                    "credit": 23,
-                    "__v": 0
-                },
-                {
-                    "_id": "62ffcb6e4183d011eea1e636",
-                    "code": "Government",
-                    "leadTutor": "Mary",
-                    "credit": 30,
-                    "__v": 0
-                },
-                {
-                    "_id": "62fe5b5ee44f5a341426ad95",
-                    "code": "Physics",
-                    "leadTutor": "Destiny",
-                    "credit": 23,
-                    "__v": 0
-                }
-            ],
-            "id": "62fee5aa5e3720fa590a83a8",
-            "__v": 0
-        }
-    ],
-    "message": "All student found",
-    "totalLength": 2
+  "message": "User created successfully",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzAxYWY2NWE0ZDJjYmU1MTc5ZDJiMmUiLCJpYXQiOjE2NjEwNTQ4MjIsImV4cCI6MTY2MTA1ODQyMn0.YxaspcigJadOvMeJq2ZoKEtYyzlNKtuysimKoOOpp2A"
 }
-
 ```
 
-#### GET `'/api/student/${id}'`
+#### POST `'/api/auth/login'`
 
-- Fetches a single set of student by their id.
-- Request Arguments: `id` - integer
-- Returns: An object with student details, `name`, `gender`, `classLevel` and `list of registered subjects`.
+- Login to gain author privileges
 
-- Sample:
+- **Request Arguments**
+
+  - `username` : string
+  - `password` : string
+
+- **Returns** : successful message, user details and token
+
+- **Sample** :
 
 ```json
 {
-    "data": {
-        "_id": "6300cdf9da2a835a22e387c3",
-        "name": "Thomas Johnson",
-        "classLevel": "SS 3",
-        "gender": "male",
-        "registeredSubjects": [],
-        "__v": 0
+  "msg": "login successfully",
+  "data": {
+    "_id": "6301b5eddce03464be59d9d2",
+    "firstName": "Destiny",
+    "lastName": "Erhabor",
+    "gender": "Male",
+    "email": "destinyerhabor6@gmail.com",
+    "username": "caesar",
+    "__v": 0
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMDFiNWVkZGNlMDM0NjRiZTU5ZDlkMiIsInVzZXJuYW1lIjoiY2Flc2FyIiwiaWF0IjoxNjYxMDU2NjM4LCJleHAiOjE2NjEwNjAyMzh9.L6GCYnqULAXvwKJQpQUY4vBXaQVdxVfStQQEKpoR9A8"
+}
+```
+
+#### POST `'/api/review'` {authentication needed}
+
+- Sends a post request to create a new review
+
+- **Request Arguments** : A json body containing,
+
+  - `image` : string (optional),
+  - `video` : string (optional),
+  - `apartmentName` : string,
+  - `rating` : number
+  - `comments.landlord` : string,
+  - `comments.environment` : string,
+  - `comments.amenitiesQuality` : string
+
+- **Returns**: Returns a success message and created review
+details.
+
+- **Sample**:
+
+```json
+{
+  "data": {
+    "apartmentName": "bamboo",
+    "image": "",
+    "video": "",
+    "rating": 2,
+    "visitorRatingCount": 0,
+    "comments": {
+      "landlord": "Not friendly",
+      "environment": "trenches",
+      "amenitiesQuality": "Bad"
     },
-    "message": "Single student found"
+    "_id": "6301b955476d5c148702ca37",
+    "owner": "6301b5eddce03464be59d9d2",
+    "createdAt": "2022-08-21T04:49:25.381Z",
+    "updatedAt": "2022-08-21T04:49:25.381Z",
+    "__v": 0
+  },
+  "message": "Review created successfully"
 }
-
 ```
 
-#### DELETE `'/student/${id}'`
+#### GET `'/api/reviews'`
 
-- Deletes a specified student using the id of the student
-- Request Arguments: `id` - integer
-- Returns: Returns a success message.
-- Sample:
+- Fetches a list of object of students in which the keys are the id,
+name, gender, class and registered subject.
+
+- **Request Arguments**: Optional `Query params`
+
+  - `page` : number
+  - `limit` : number
+  - `sort` : string - (`visitRating` by default sort by `latest`)
+
+- **Returns**: An array of data object as in `sample` for when sorted by helpful visitor rating. `?sort=visitRating`
+
+- **Sample**:
+
+```json
+{
+  "data": [
+    {
+      "comments": {
+        "landlord": "Not friendly",
+        "environment": "trenches",
+        "amenitiesQuality": "Bad"
+      },
+      "_id": "6301e9577c402eb4e15b868e",
+      "image": "",
+      "video": "",
+      "apartmentName": "bamboo",
+      "rating": 2,
+      "visitorRatingCount": 109,
+      "owner": {
+        "_id": "6301e88f578f84cd0887f785",
+        "firstName": "Destiny",
+        "lastName": "Erhabor",
+        "gender": "Male",
+        "email": "destinyerhabor6@gmail.com",
+        "username": "caesar",
+        "__v": 0
+      },
+      "createdAt": "2022-08-21T08:14:15.427Z",
+      "updatedAt": "2022-08-21T08:36:27.811Z",
+      "__v": 0
+    },
+    {
+      "comments": {
+        "landlord": "friendly",
+        "environment": "condusive",
+        "amenitiesQuality": "Okay"
+      },
+      "_id": "6301e9e07c402eb4e15b8694",
+      "image": "",
+      "video": "",
+      "apartmentName": "beache",
+      "rating": 12,
+      "visitorRatingCount": 0,
+      "owner": {
+        "_id": "6301e88f578f84cd0887f785",
+        "firstName": "Destiny",
+        "lastName": "Erhabor",
+        "gender": "Male",
+        "email": "destinyerhabor6@gmail.com",
+        "username": "caesar",
+        "__v": 0
+      },
+      "createdAt": "2022-08-21T08:16:32.429Z",
+      "updatedAt": "2022-08-21T08:16:32.429Z",
+      "__v": 0
+    }
+  ],
+  "message": "all reviews found"
+}
+```
+
+#### GET `'/api/review/${id}'`
+
+- Fetches a single set of reviews by their id.
+
+- **Request Arguments**:
+
+  - `id` : integer
+
+- **Returns**: An object with review details, as in `sample`
+
+- **Sample**:
+
+```json
+{
+  "data": {
+    "comments": {
+      "landlord": "Not friendly",
+      "environment": "trenches",
+      "amenitiesQuality": "Bad"
+    },
+    "_id": "6301b91dec4b6504348918b2",
+    "apartmentName": "jericho",
+    "image": "",
+    "video": "",
+    "rating": 2,
+    "visitorRatingCount": 0,
+    "owner": {
+      "_id": "6301b5eddce03464be59d9d2",
+      "firstName": "Destiny",
+      "lastName": "Erhabor",
+      "gender": "Male",
+      "email": "destinyerhabor6@gmail.com",
+      "username": "caesar",
+      "__v": 0
+    },
+    "createdAt": "2022-08-21T04:48:29.170Z",
+    "updatedAt": "2022-08-21T04:48:29.170Z",
+    "__v": 0
+  },
+  "message": "Single review found"
+}
+```
+
+#### DELETE `'api/review/${id}'` {Authentication and Authorization needed}
+
+- Deletes a specific review using the id of the student
+
+- **Request Arguments**:
+
+  - `id` : integer
+
+- **Returns**: Returns a success message.
+
+- **Sample**:
 
 ```json
 {
@@ -219,214 +304,75 @@ message	"Welcome to Ori Student management board!!"
 }
 ```
 
-#### PUT `'/api/student/${id}'`
+#### PUT `'/api/review/${id}'` {Authentication and Authorization needed}
 
-- Update a student data
-- Request Arguments: A Student `id` - integer and json body containing any of the student data to update, `name` - string, `gender` - string, `classLevel` - string
-- Returns: updated student and a success message
+- Update review data
 
-- Sample:
+- **Request Arguments**: a params and json body of any data to be updated
+
+  - `id` - `{params}` : integer
+  - `image` : string (optional),
+  - `video` : string (optional),
+  - `apartmentName` : string,
+  - `rating` : number
+  - `comments.landlord` : string,
+  - `comments.environment` : string,
+  - `comments.amenitiesQuality` : string
+
+- **Returns**: updated review and a success message as in `sample`
+
+- **Sample**:
 
 ```json
 {
-    "data": {
-        "_id": "6300cdf9da2a835a22e387c3",
-        "name": "Thomas Johnson",
-        "classLevel": "SS 3",
-        "gender": "trans-gender",
-        "registeredSubjects": [],
-        "__v": 0
+  "data": {
+    "_id": "6301b91dec4b6504348918b2",
+    "image": "",
+    "video": "",
+    "apartmentName": "jericho",
+    "rating": 1,
+    "visitorRatingCount": 0,
+    "owner": "6301b5eddce03464be59d9d2",
+    "createdAt": "2022-08-21T04:48:29.170Z",
+    "updatedAt": "2022-08-21T04:59:32.336Z",
+    "__v": 0
+  },
+  "message": "review updated"
+}
+```
+
+#### PATCH `'/api/review/${id}/visitor'`
+
+- Allows visitor to mark reviews as helpful or not
+
+- **Request Arguments**: An id integer of review and json body of
+
+  - `id - {param}` : integer
+  - `helpful` : integer (accepts only 1 or 0)
+
+- **Returns**: An object with updated `visitorRatingCount` and a success message as in `sample`
+
+- **Sample**:
+
+```json
+{
+  "data": {
+    "comments": {
+      "landlord": "friendly",
+      "environment": "condusive",
+      "amenitiesQuality": "Okay"
     },
-    "message": "Single student updated"
+    "_id": "6301e9e07c402eb4e15b8694",
+    "image": "",
+    "video": "",
+    "apartmentName": "beache",
+    "rating": 12,
+    "visitorRatingCount": 1,
+    "owner": "6301e88f578f84cd0887f785",
+    "createdAt": "2022-08-21T08:16:32.429Z",
+    "updatedAt": "2022-08-21T09:22:12.783Z",
+    "__v": 0
+  },
+  "message": "successful"
 }
-
-```
-
-<!-- ========== SUBJECTS ============== -->
-
-#### POST `'/api/subject/student/${id}'`
-
-- Register student subject
-
-- Request Arguments: `id` - integer and array of json body of available subjects (5 min and 9 max) `"questions" : [{"code": "Maths"}, {"code":"English"}, {"code":"Economics"}, {"code":"CRK"}, {"code":"Physics"}]` - array.
-
-- Returns: An object with registered subjects and a success message.
-
-- Sample:
-
-```json
-{
-    "data": {
-        "_id": "6300cdf9da2a835a22e387c3",
-        "name": "Thomas Johnson",
-        "classLevel": "SS 3",
-        "gender": "trans-gender",
-        "registeredSubjects": [
-            "63010357781c04f980887a62"
-        ],
-        "__v": 0
-    },
-    "message": "successfully register your subjects"
-}
-
-```
-
-#### POST `'/api/subject'`
-
-- Create subjects with its code, credit and lead tutor
-
-- Request Arguments : A json body containing `code` - string, `leadTutor` - string, `credit` - integer
-
-- Returns: An object data with created subjects and success message
-
-- Sample :
-
-```json
-{
-    "data": {
-        "code": "Economics",
-        "leadTutor": "Paul",
-        "credit": 50,
-        "_id": "63010409781c04f980887a84",
-        "__v": 0
-    },
-    "msg": "Successfully created"
-}
-
-```
-
-#### GET `'/api/subjects'`
-
-- Fetch all available subjects.
-- Request Argument: None
-- Returns: a list of available subjects object details and a success message.
-- Sample: `curl http://127.0.0.1:5000/api/subjects`
-
-```json
-{
-    "data": [
-        {
-            "_id": "6301034d781c04f980887a5e",
-            "code": "Government",
-            "leadTutor": "Mary",
-            "credit": 30,
-            "__v": 0
-        },
-        {
-            "_id": "63010357781c04f980887a62",
-            "code": "Maths",
-            "leadTutor": "Jane",
-            "credit": 30,
-            "__v": 0
-        },
-        {
-            "_id": "6301036e781c04f980887a66",
-            "code": "English",
-            "leadTutor": "Abert",
-            "credit": 20,
-            "__v": 0
-        },
-        {
-            "_id": "63010379781c04f980887a6a",
-            "code": "Physics",
-            "leadTutor": "Abert",
-            "credit": 21,
-            "__v": 0
-        },
-        {
-            "_id": "6301038b781c04f980887a6e",
-            "code": "Chemistry",
-            "leadTutor": "Ruth",
-            "credit": 31,
-            "__v": 0
-        },
-        {
-            "_id": "630103b3781c04f980887a73",
-            "code": "Biology",
-            "leadTutor": "Destiny",
-            "credit": 30,
-            "__v": 0
-        },
-        {
-            "_id": "630103bb781c04f980887a77",
-            "code": "CRK",
-            "leadTutor": "Destiny",
-            "credit": 30,
-            "__v": 0
-        },
-        {
-            "_id": "630103df781c04f980887a80",
-            "code": "Marketing",
-            "leadTutor": "Caesar",
-            "credit": 50,
-            "__v": 0
-        },
-        {
-            "_id": "63010409781c04f980887a84",
-            "code": "Economics",
-            "leadTutor": "Paul",
-            "credit": 50,
-            "__v": 0
-        }
-    ],
-    "message": "all subjects"
-}
-
-```
-
-#### GET `'/api/student/${id}'`
-
-- Fetches a single set of subject by their id.
-- Request Arguments: `id` - integer
-- Returns: An object with subject details, `code`, `leadTutor` and `credit`.
-
-- Sample:
-
-```json
-{
-    "data": {
-        "_id": "63010409781c04f980887a84",
-        "code": "Economics",
-        "leadTutor": "Paul",
-        "credit": 50,
-        "__v": 0
-    },
-    "message": "Single subject found"
-}
-
-```
-
-#### DELETE `'/student/${id}'`
-
-- Deletes a specified subject using the id of the subject
-- Request Arguments: `id` - integer
-- Returns: Returns a success message.
-- Sample:
-
-```json
-{
-  "message": "Single subject deleted"
-}
-```
-
-#### PUT `'/api/subject/${id}'`
-
-- Update a subject data
-- Request Arguments: A subject `id` - integer and json body containing any of the subject data to update, `code` - string, `leadTutor` - string, `credit` - integer
-- Returns: updated subject and a success message
-
-- Sample:
-
-```json
-{
-    "data": {
-        "_id": "63010409781c04f980887a84",
-        "code": "Economics",
-        "leadTutor": "Paul",
-        "credit": 50,
-        "__v": 0
-    },
-    "message": "Single student updated"
-}
-
 ```
