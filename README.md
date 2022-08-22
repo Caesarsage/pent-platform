@@ -5,7 +5,6 @@ Welcome to Pent api that allows you to give reviews about your previous stayed a
 
 - Backend - ExpressJS/Typescript
 - Database - MongoDB
-- Unit Testing - Mocha and Chai
 - Endpoint Testing - Postman and ThunderClient
 - Deployment - Mongo Atlas and Heroku
 

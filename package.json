@@ -10,7 +10,7 @@
     "serve": "NODE_ENV=development nodemon -L src/main.ts --trace-warnings  ",
     "watch": "tsc -w",
     "lint": "npx eslint . --fix",
-    "test": "NODE_ENV=test mocha -r ts-node/register 'src/test/*.test.ts' --timeout 10000 --watch"
+    "test": "NODE_ENV=test nodemon --watch . --ext ts --exec \"mocha --timeout 200000  -r ts-node/register src/test/*.test.ts\""
   },
   "keywords": [],
   "author": "caesarsage",
